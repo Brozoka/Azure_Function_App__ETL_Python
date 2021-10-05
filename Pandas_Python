@@ -20,7 +20,7 @@ table_original_2['column_name'] = table_original_2['column_name'].fillna(int(0))
 
 # load
 
-# join the 2 dataframes into the final dataframe on the brewery_id key
+# join the 2 dataframes into the final dataframe on the key column
 summary = pd.merge(left=table, right=table_original_2, on='key_column_name', how='inner')
 
 # load the data into a csv file and save it to a local folder
