@@ -27,7 +27,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     file1['column name'] = file1['column name'].fillna(0)
 
     # replace all null values with either 0 or a string, also do type casting for strings
-    file2['column name'] = breweries['column name'].fillna(int(0))
+    file2['column name'] = file2['column name'].fillna(int(0))
     
     # load
     summary = pd.merge(left=file1, right=file2, on='key column name', how='inner')
