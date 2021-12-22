@@ -10,49 +10,44 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     STORAGEACCOUNTURL= credentials['STORAGEACCOUNTURL']
     STORAGEACCOUNTKEY= credentials['STORAGEACCOUNTKEY']
-    LOCALFILENAME= ['beers.csv', 'breweries.csv']
+    LOCALFILENAME= ['file_name.csv', 'file_name.csv']
 
-    beer = pd.DataFrame()
-    breweries = pd.DataFrame()
+    file1 = pd.DataFrame()
+    file2 = pd.DataFrame()
     
-    #download the data from adls
+    #download the data from ADLS
     service_client = DataLakeServiceClient(account_url=STORAGEACCOUNTURL, credential=STORAGEACCOUNTKEY)
-    adl_client_instance = service_client.get_file_system_client(file_system="raw")
-    directory_client = adl_client_instance.get_directory_client("raw")
-
+    adl_client_instance = service_client.get_file_system_client(file_system="input")
+    directory_client = adl_client_instance.get_directory_client("input")
+    
     #load the data into dataframes
     file_client = adl_client_instance.get_file_client(LOCALFILENAME[0])
     adl_data = file_client.download_file()
-    beerbyte = adl_data.readall()
-    s=str(beerbyte,'utf-8')
-    beer = pd.read_csv(StringIO(s))
-            
+    byte1 = adl_data.readall()
+    s=str(byte1,'utf-8')
+    file1 = pd.read_csv(StringIO(s))
+    
     file_client = adl_client_instance.get_file_client(LOCALFILENAME[1])
     adl_data = file_client.download_file()
-    brewriesbyte = adl_data.readall()
-    s=str(brewriesbyte,'utf-8')
-    breweries = pd.read_csv(StringIO(s))
+    byte2 = adl_data.readall()
+    s=str(byte2,'utf-8')
+    file2 = pd.read_csv(StringIO(s))
     
-    # replace all null values with either 0 or a string, also do type casting for strings
-    beer['abv'] = beer['abv'].fillna(0)
-    beer['ibu'] = beer['ibu'].fillna(0)
-    beer['id'] = beer['id'].fillna(int(0))
-    beer['name_beer'] = beer['name'].astype(str).fillna('No name')
-    beer['style'] = beer['style'].astype(str).fillna('No style')
-    beer['brewery_id'] = beer['brewery_id'].fillna(int(0))
-    beer['ounces'] = beer['ounces'].fillna(0)
+    # replace all null values with either 0 or a string,  lso do type casting in case we need a type other than string
+    file1['column name'] = file1['column name'].fillna(0)
+    file1['column name'] = file1['column name'].fillna(int(0))
+    file1['column name'] = file1['column name'].astype(str).fillna('String to replace null values')
+   
+    # replace all null values with either 0 or a string, also do type casting in case we need a type other than string
+    file2['column name'] = file2['column name'].fillna(0)
+    file2['column name'] = file2['column name'].fillna(int(0))
+    file2['column name'] = file2['column name'].astype(str).fillna('String to replace null values')
 
-    # replace all null values with either 0 or a string, also do type casting for strings
-    breweries['brewery_id'] = breweries['brewery_id'].fillna(int(0))
-    breweries['name'] = breweries['name'].astype(str).fillna('No name')
-    breweries['city'] = breweries['city'].astype(str).fillna('No city')
-    breweries['state'] = breweries['state'].astype(str).fillna('No state')
-
-    # renaming the column to avoid duplicate columns names
-    breweries = breweries.rename(columns={'name': 'name_breweries'})
+    # optional : renaming the column to avoid duplicate columns names
+    file1 = file1.rename(columns={'column to be changed': 'change it to this string'})
     
     # merge the 2 csv files
-    summary = pd.merge(left=beer, right=breweries, on='brewery_id', how='inner')
+    output = pd.merge(left=file1, right=file2, on='key column name', how='inner')
     
     #upload the file to adls
     service_client = DataLakeServiceClient(account_url=STORAGEACCOUNTURL, credential=STORAGEACCOUNTKEY)
@@ -65,6 +60,3 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     file_client.flush_data(len(file_contents))
 
     return("This HTTP triggered function executed successfully.")
-
-if __name__ == '__main__':
-    main("name")
