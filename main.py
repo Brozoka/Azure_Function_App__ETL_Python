@@ -6,12 +6,15 @@ import yaml
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     
+    # get the credentials from a YAML file
     credentials = yaml.load(open('./credentials.yml'), Loader=yaml.FullLoader)
     
+    #connect to ADLS
     STORAGEACCOUNTURL= credentials['STORAGEACCOUNTURL']
     STORAGEACCOUNTKEY= credentials['STORAGEACCOUNTKEY']
     LOCALFILENAME= ['file_name.csv', 'file_name.csv']
-
+    
+    #create 2 dataframes
     file1 = pd.DataFrame()
     file2 = pd.DataFrame()
     
@@ -21,15 +24,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     directory_client = adl_client_instance.get_directory_client("input")
     
     #load the data into dataframes
-    file_client = adl_client_instance.get_file_client(LOCALFILENAME[0])
-    adl_data = file_client.download_file()
-    byte1 = adl_data.readall()
+    file_client1 = adl_client_instance.get_file_client(LOCALFILENAME[0])
+    adl_data1 = file_client1.download_file()
+    byte1 = adl_data1.readall()
     s=str(byte1,'utf-8')
     file1 = pd.read_csv(StringIO(s))
-    
-    file_client = adl_client_instance.get_file_client(LOCALFILENAME[1])
-    adl_data = file_client.download_file()
-    byte2 = adl_data.readall()
+    file_client2 = adl_client_instance.get_file_client(LOCALFILENAME[1])
+    adl_data2 = file_client2.download_file()
+    byte2 = adl_data2.readall()
     s=str(byte2,'utf-8')
     file2 = pd.read_csv(StringIO(s))
     
