@@ -12,9 +12,9 @@ Inside Azure(Azure account):
 THE CODE
 --------
 -The 'main.py' script moves 2 CSV files from an ADLS storage conatiner, merges them and moves it to a different container inside ADLS
--The 2 CSV files are merged together into one CSV file based on a key column. Null values are replaced and type casting is also implemented.
+-The 2 CSV files are merged together into one Parquet file based on a key column. Null values are replaced and type casting is also implemented.
 -----------
 ETL PROCESS
 -----------
 ADLS/input -> ADLS/output/output
-'file1.csv' & 'file2.csv' -> 'output.csv'
+'file1.csv' & 'file2.csv' -> 'output.parquet'
