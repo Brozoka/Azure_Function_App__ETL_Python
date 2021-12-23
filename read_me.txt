@@ -6,7 +6,7 @@ On PC:
 -VS Code with a functionapp extension installed(you need to login to create a functionapp in VS Code)
 -Python newest version
 Inside Azure(Azure account):
--ADLS Storage 
+-ADLS Storage(gen 2)
 -FunctionApp(basic plan)
 --------
 THE CODE
