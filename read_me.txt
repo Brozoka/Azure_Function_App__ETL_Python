@@ -1,5 +1,5 @@
 Python script to transfer and transform data inside Azure ADLS storage using Visual Studio Code
------------------
+
 REQUIRED RESOURCES
 -----------------
 On PC:
@@ -8,13 +8,20 @@ On PC:
 Inside Azure(Azure account):
 -ADLS Storage(gen 2)
 -FunctionApp(basic plan)
---------
+
 THE CODE
 --------
 -The 'main.py' script moves 2 CSV files from an ADLS storage conatiner, merges them and moves it to a different container inside ADLS
 -The 2 CSV files are merged together into one Parquet file based on a key column. Null values are replaced and type casting is also implemented.
------------
+
 ETL PROCESS
 -----------
 ADLS/input -> ADLS/output/output
 'file1.csv' & 'file2.csv' -> 'output.parquet'
+
+TASKS
+-----
+-Create a basic plan functionapp with a HTTP Trigger function inside it
+-Insert the script into your main file with the right parameters
+-Create a 'credentials.yml' file
+-The 'requirements.txt' file should include all the libraries you have to import into Azure
